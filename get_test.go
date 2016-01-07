@@ -1,25 +1,25 @@
-package utfhttp
+package httpx
 
 import (
   "testing"
 )
 
-func TestGetDocument(t *testing.T) {
+func TestGetWithUA(t *testing.T) {
   succ_cases := []string {
-    "http://junz.info",
+    "http://m.facebook.com",
   }
   fail_cases := []string {
-    "http://junz.info/404",
+    "NOT_AN_URL",
   }
 
   for _, url := range succ_cases {
-    _, err := GetDocument(url)
+    _, err := GetWithUA(url, UA_iPhone_6_Plus)
     if err != nil {
       t.Errorf("Failed: %s", url)
     }
   }
   for _, url := range fail_cases {
-    _, err := GetDocument(url)
+    _, err := GetWithUA(url, UA_iPhone_6_Plus)
     if err == nil {
       t.Errorf("Should fail while not: %s", url)
     }

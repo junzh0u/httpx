@@ -1,52 +1,19 @@
-package utfhttp
+package httpx
 
 import (
-  "bytes"
-  "fmt"
-  "io/ioutil"
   "net/http"
-  "strings"
-
-  "github.com/golang/glog"
-  "github.com/PuerkitoBio/goquery"
-  "golang.org/x/net/html/charset"
 )
 
-func GetBody(url string) (string, error) {
-  resp, err := http.Get(url)
-  if err != nil {
-    return "", err
-  }
-  if resp.StatusCode != http.StatusOK {
-    return "", fmt.Errorf("Unexpected status code %d from %s", resp.StatusCode, url)
-  }
-  body, err := ioutil.ReadAll(resp.Body)
-  resp.Body.Close()
-  if err != nil {
-    return "", err
-  }
-  rawdoc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
-  if err != nil {
-    return "", err
-  }
-  contenttype, _ := rawdoc.Find("meta[http-equiv=content-type]").Attr("content")
-  encoding, name, certain := charset.DetermineEncoding(body, contenttype)
-  if certain {
-    glog.V(1).Infof("[UTFHTTP] Encoding of %v is %v", url, name)
-  } else {
-    glog.V(1).Infof("[UTFHTTP] Guess encoding of %v is %v", url, name)
-  }
-  utfbody, err := encoding.NewDecoder().Bytes(body)
-  if err != nil {
-    return "", err
-  }
-  return string(utfbody), nil
-}
+const (
+  UA_iPhone_6_Plus string = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4"
+)
 
-func GetDocument(url string) (*goquery.Document, error) {
-  body, err := GetBody(url)
+func GetWithUA(url string, ua string) (*http.Response, error) {
+  client := &http.Client{}
+  req, err := http.NewRequest("GET", url, nil)
   if err != nil {
     return nil, err
   }
-  return goquery.NewDocumentFromReader(strings.NewReader(body))
+  req.Header.Set("User-Agent", ua)
+  return client.Do(req)
 }
