@@ -1,11 +1,9 @@
 package httpx
 
 import (
-  "bytes"
   "io/ioutil"
   "net/http"
 
-  "github.com/PuerkitoBio/goquery"
   "golang.org/x/net/html/charset"
 )
 
@@ -14,11 +12,7 @@ func RespBodyInUTF8(resp *http.Response) (string, error) {
   if err != nil {
     return "", err
   }
-  rawdoc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
-  if err != nil {
-    return "", err
-  }
-  contenttype, _ := rawdoc.Find("meta[http-equiv=content-type]").Attr("content")
+  contenttype := resp.Header.Get("Content-Type")
   encoding, _, _ := charset.DetermineEncoding(body, contenttype)
   utfbody, err := encoding.NewDecoder().Bytes(body)
   if err != nil {

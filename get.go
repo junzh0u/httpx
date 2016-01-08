@@ -17,3 +17,7 @@ func GetWithUA(url string, ua string) (*http.Response, error) {
   req.Header.Set("User-Agent", ua)
   return client.Do(req)
 }
+
+func GetMobile(url string) (*http.Response, error) {
+  return GetWithUA(url, UA_iPhone_6_Plus)
+}
