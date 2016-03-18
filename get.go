@@ -28,16 +28,16 @@ func GetMobile(url string) (*http.Response, error) {
 }
 
 func mkSavePageJS() (string, error) {
-	jsfile, err := ioutil.TempFile("/tmp", "phatomjs.savepage")
+	file, err := ioutil.TempFile("/tmp", "phatomjs.savepage")
 	if err != nil {
 		return "", err
 	}
-	err = jsfile.Close()
+	err = file.Close()
 	if err != nil {
 		return "", err
 	}
-	jsScriptPath := jsfile.Name()
-	jscontent := `var system = require('system');
+	path := file.Name()
+	content := `var system = require('system');
 	var page = require('webpage').create();
 
 	page.onError = function(msg, trace) {
@@ -48,11 +48,11 @@ func mkSavePageJS() (string, error) {
 		console.log(page.content);
 		phantom.exit();
 	});`
-	err = ioutil.WriteFile(jsScriptPath, []byte(jscontent), 0644)
+	err = ioutil.WriteFile(path, []byte(content), 0644)
 	if err != nil {
 		return "", err
 	}
-	return jsScriptPath, nil
+	return path, nil
 }
 
 // GetFullPage behaves like http.Get, but use PhantomJS underneath to get the full rendered page
@@ -65,13 +65,13 @@ func GetFullPage(url string, phantomJsBinPath string) (*http.Response, error) {
 		return resp, err
 	}
 
-	jsScriptPath, err := mkSavePageJS()
+	scriptPath, err := mkSavePageJS()
 	if err != nil {
 		return nil, err
 	}
 	cmd := exec.Command(
 		phantomJsBinPath,
-		jsScriptPath,
+		scriptPath,
 		url,
 	)
 	stdout, _ := cmd.Output()

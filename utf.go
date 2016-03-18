@@ -13,11 +13,11 @@ func RespBodyInUTF8(resp *http.Response) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	contenttype := resp.Header.Get("Content-Type")
-	encoding, _, _ := charset.DetermineEncoding(body, contenttype)
-	utfbody, err := encoding.NewDecoder().Bytes(body)
+	contentType := resp.Header.Get("Content-Type")
+	encoding, _, _ := charset.DetermineEncoding(body, contentType)
+	utfBody, err := encoding.NewDecoder().Bytes(body)
 	if err != nil {
 		return "", err
 	}
-	return string(utfbody), nil
+	return string(utfBody), nil
 }
