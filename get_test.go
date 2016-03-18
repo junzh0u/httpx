@@ -1,27 +1,48 @@
 package httpx
 
 import (
-  "testing"
+	"io/ioutil"
+	"os"
+	"testing"
 )
 
 func TestGetWithUA(t *testing.T) {
-  succ_cases := []string {
-    "http://m.facebook.com",
-  }
-  fail_cases := []string {
-    "NOT_AN_URL",
-  }
+	succCases := []string{
+		"http://m.facebook.com",
+	}
+	failCases := []string{
+		"NOT_AN_URL",
+	}
 
-  for _, url := range succ_cases {
-    _, err := GetWithUA(url, UA_iPhone_6_Plus)
-    if err != nil {
-      t.Errorf("Failed: %s", url)
-    }
-  }
-  for _, url := range fail_cases {
-    _, err := GetWithUA(url, UA_iPhone_6_Plus)
-    if err == nil {
-      t.Errorf("Should fail while not: %s", url)
-    }
-  }
+	for _, url := range succCases {
+		_, err := GetWithUA(url, uaiPhone6Plus)
+		if err != nil {
+			t.Errorf("Failed: %s", url)
+		}
+	}
+	for _, url := range failCases {
+		_, err := GetWithUA(url, uaiPhone6Plus)
+		if err == nil {
+			t.Errorf("Should fail while not: %s", url)
+		}
+	}
+}
+
+func TestGetFullPage(t *testing.T) {
+	// Untestable in Travis CI
+	if os.Getenv("TRAVIS_GO_VERSION") != "" {
+		return
+	}
+
+	resp, err := GetFullPage("http://m.1pondo.tv/movies/1/", "phantomjs")
+	if err != nil {
+		t.Error(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Error(err)
+	}
+	if len(body) < 1000 {
+		t.Errorf("Body too short, could be broken:\n%s\n", string(body))
+	}
 }
