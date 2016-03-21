@@ -2,7 +2,6 @@ package httpx
 
 import (
 	"io/ioutil"
-	"os"
 	"testing"
 )
 
@@ -29,11 +28,6 @@ func TestGetWithUA(t *testing.T) {
 }
 
 func TestGetFullPage(t *testing.T) {
-	// Untestable in Travis CI
-	if os.Getenv("TRAVIS_GO_VERSION") != "" {
-		return
-	}
-
 	resp, err := GetFullPage("http://m.1pondo.tv/movies/1/", "phantomjs")
 	if err != nil {
 		t.Error(err)
