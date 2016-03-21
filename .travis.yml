@@ -1,1 +1,2 @@
 language: go
+install: ./configure_git.sh
