@@ -1,1 +1,1 @@
-a simple http client that force transcoding body content to utf-8
+some useful utilities around http
