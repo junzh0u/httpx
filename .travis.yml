@@ -1,2 +1,2 @@
 language: go
-install: ./configure_git.sh
+before_install: ./configure_git.sh
