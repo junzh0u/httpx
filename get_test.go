@@ -36,7 +36,7 @@ func TestGetFullPage(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if len(body) < 1000 {
+	if len(body) < 10000 {
 		t.Errorf("Body too short, could be broken:\n%s\n", string(body))
 	}
 }
