@@ -9,10 +9,6 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
-// GetFunc is a function type that takes a url and returns http response,
-// similar as http.Get
-type GetFunc func(string) (*http.Response, error)
-
 // Decorator of GetFunc
 type Decorator func(GetFunc) GetFunc
 
