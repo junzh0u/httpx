@@ -42,16 +42,26 @@ func mkSavePageJS() (string, error) {
 	}
 	path := file.Name()
 	content := `var system = require('system');
-	var page = require('webpage').create();
+var page = require('webpage').create();
 
-	page.onError = function(msg, trace) {
+page.onError = function(msg, trace) {
 	// do nothing
-	};
+};
 
-	page.open(system.args[1], function(status) {
-		console.log(page.content);
-		phantom.exit();
-	});`
+phantom.addCookie({
+  'name'     : 'adc',
+  'value'    : '1',
+  'domain'   : '.mgstage.com',
+  'path'     : '/',
+  'httponly' : false,
+  'secure'   : false,
+  'expires'  : (new Date()).getTime() + (1000 * 60 * 60)
+});
+
+page.open(system.args[1], function(status) {
+  console.log(page.content);
+  phantom.exit();
+});`
 	err = ioutil.WriteFile(path, []byte(content), 0644)
 	if err != nil {
 		return "", err
@@ -61,28 +71,25 @@ func mkSavePageJS() (string, error) {
 
 // GetFullPage takes a path to `phantomjs` and returns an GetFunc, which behaves
 // like http.Get, but use PhantomJS underneath to get the full rendered page
-func GetFullPage(phantomJsBinPath string) GetFunc {
-	return func(url string) (*http.Response, error) {
-		resp, err := http.Get(url)
-		if err != nil {
-			return resp, err
-		}
-		if resp.StatusCode != 200 {
-			return resp, err
-		}
-
-		scriptPath, err := mkSavePageJS()
-		if err != nil {
-			return nil, err
-		}
-		cmd := exec.Command(
-			phantomJsBinPath,
-			scriptPath,
-			url,
-		)
-		stdout, _ := cmd.Output()
-		resp.Body = ioutil.NopCloser(bytes.NewBuffer(stdout))
-		return resp, nil
+func GetFullPage(url string) (*http.Response, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return resp, err
+	}
+	if resp.StatusCode != 200 {
+		return resp, err
 	}
 
+	scriptPath, err := mkSavePageJS()
+	if err != nil {
+		return nil, err
+	}
+	cmd := exec.Command(
+		"phantomjs",
+		scriptPath,
+		url,
+	)
+	stdout, _ := cmd.Output()
+	resp.Body = ioutil.NopCloser(bytes.NewBuffer(stdout))
+	return resp, nil
 }

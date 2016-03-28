@@ -28,7 +28,7 @@ func TestGetWithUA(t *testing.T) {
 }
 
 func TestGetFullPage(t *testing.T) {
-	resp, err := GetFullPage("phantomjs")("http://m.1pondo.tv/movies/1/")
+	resp, err := GetFullPage("http://m.1pondo.tv/movies/1/")
 	if err != nil {
 		t.Error(err)
 	}
