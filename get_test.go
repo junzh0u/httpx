@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestGetWithUA(t *testing.T) {
+func TestGetMobile(t *testing.T) {
 	succCases := []string{
 		"http://m.facebook.com",
 	}
@@ -14,13 +14,13 @@ func TestGetWithUA(t *testing.T) {
 	}
 
 	for _, url := range succCases {
-		_, err := GetWithUA(url, uaiPhone6Plus)
+		_, err := GetMobile(url)
 		if err != nil {
 			t.Errorf("Failed: %s", url)
 		}
 	}
 	for _, url := range failCases {
-		_, err := GetWithUA(url, uaiPhone6Plus)
+		_, err := GetMobile(url)
 		if err == nil {
 			t.Errorf("Should fail while not: %s", url)
 		}
