@@ -37,7 +37,10 @@ func Cached(db *leveldb.DB) Decorator {
 				return resp, err
 			}
 			err = db.Put([]byte(url), cachedresp, nil)
-			return resp, err
+			if err != nil {
+				return resp, err
+			}
+			return http.ReadResponse(bufio.NewReader(bytes.NewReader(cachedresp)), nil)
 		}
 	}
 }

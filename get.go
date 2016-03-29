@@ -74,6 +74,7 @@ func GetWithPhantomJS(script string) GetFunc {
 		if err != nil {
 			return nil, err
 		}
+		resp.ContentLength = int64(len(stdout))
 		resp.Body = ioutil.NopCloser(bytes.NewBuffer(stdout))
 		return resp, nil
 	}
