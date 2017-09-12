@@ -47,11 +47,23 @@ func GetMobile(url string) (*http.Response, error) {
 	return GetWithUA(uaiPhone6Plus)(url)
 }
 
+var phantomPoolSize = 20
+var phantomPool = make(chan int, phantomPoolSize)
+
+func init() {
+	for i := 1; i <= phantomPoolSize; i++ {
+		phantomPool <- 1
+	}
+}
+
 // GetWithPhantomJS takes a string of js script, and returns a GetFunc
 // which behaves like http.Get, but run the script using PhantomJS underneath to
 // get the result
 func GetWithPhantomJS(script string) GetFunc {
 	return func(url string) (*http.Response, error) {
+		<-phantomPool
+		defer func() { phantomPool <- 1 }()
+
 		resp, err := http.Get(url)
 		if err != nil {
 			return resp, err
