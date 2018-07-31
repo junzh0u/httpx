@@ -59,7 +59,7 @@ func init() {
 // GetWithPhantomJS takes a string of js script, and returns a GetFunc
 // which behaves like http.Get, but run the script using PhantomJS underneath to
 // get the result
-func GetWithPhantomJS(script string) GetFunc {
+func GetWithPhantomJS(script string, alwaysOk bool) GetFunc {
 	return func(url string) (*http.Response, error) {
 		<-phantomPool
 		defer func() { phantomPool <- 1 }()
@@ -67,6 +67,9 @@ func GetWithPhantomJS(script string) GetFunc {
 		resp, err := http.Get(url)
 		if err != nil {
 			return resp, err
+		}
+		if alwaysOk {
+			resp.StatusCode = 200
 		}
 		if resp.StatusCode != 200 {
 			return resp, err
@@ -94,5 +97,5 @@ func GetWithPhantomJS(script string) GetFunc {
 
 // GetFullPage is a wrapper of GetWithPhantomJS, with default savepage.js
 func GetFullPage(url string) (*http.Response, error) {
-	return GetWithPhantomJS(savePageJS)(url)
+	return GetWithPhantomJS(savePageJS, false)(url)
 }
