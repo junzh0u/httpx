@@ -40,3 +40,25 @@ func TestGetFullPage(t *testing.T) {
 		t.Errorf("Body too short, could be broken:\n%s\n", string(body))
 	}
 }
+
+func TestGetInsecure(t *testing.T) {
+	succCases := []string{
+		"https://www.tokyo-hot.com/product/?q=n0110",
+	}
+	failCases := []string{
+		"NOT_AN_URL",
+	}
+
+	for _, url := range succCases {
+		_, err := GetInsecure(url)
+		if err != nil {
+			t.Errorf("Failed: %s", url)
+		}
+	}
+	for _, url := range failCases {
+		_, err := GetInsecure(url)
+		if err == nil {
+			t.Errorf("Should fail while not: %s", url)
+		}
+	}
+}

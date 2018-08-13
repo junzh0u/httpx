@@ -2,6 +2,7 @@ package httpx
 
 import (
 	"bytes"
+	"crypto/tls"
 	"io/ioutil"
 	"net/http"
 	"os/exec"
@@ -98,4 +99,13 @@ func GetWithPhantomJS(script string, alwaysOk bool) GetFunc {
 // GetFullPage is a wrapper of GetWithPhantomJS, with default savepage.js
 func GetFullPage(url string) (*http.Response, error) {
 	return GetWithPhantomJS(savePageJS, false)(url)
+}
+
+// GetInsecure is a http.Get with InsecureSkipVerify turned on
+func GetInsecure(url string) (*http.Response, error) {
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+	return client.Get(url)
 }
