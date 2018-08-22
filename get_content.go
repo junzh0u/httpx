@@ -56,7 +56,6 @@ func GetContentViaPhantomJS(cookies []*http.Cookie, waitDuration time.Duration) 
 		}
 
 		if waitDuration > 0 {
-			page.Reload()
 			time.Sleep(waitDuration)
 		}
 
