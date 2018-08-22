@@ -1,0 +1,16 @@
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/junzh0u/ioutilx"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/syndtr/goleveldb"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/net"
+
+[prune]
+  go-tests = true
+  unused-packages = true

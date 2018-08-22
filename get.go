@@ -11,8 +11,7 @@ import (
 )
 
 const (
-	uaiPhone6Plus string = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4"
-	savePageJS    string = `var system = require('system');
+	savePageJS string = `var system = require('system');
 var page = require('webpage').create();
 
 page.onError = function(msg, trace) {
@@ -28,25 +27,6 @@ page.open(system.args[1], function(status) {
 // GetFunc is a function type that takes a url and returns http response,
 // similar as http.Get
 type GetFunc func(string) (*http.Response, error)
-
-// GetWithUA takes an UA string, and returns a GetFunc
-// which behaves like http.Get, but with specified UA
-func GetWithUA(ua string) GetFunc {
-	return func(url string) (*http.Response, error) {
-		client := &http.Client{}
-		req, err := http.NewRequest("GET", url, nil)
-		if err != nil {
-			return nil, err
-		}
-		req.Header.Set("User-Agent", ua)
-		return client.Do(req)
-	}
-}
-
-// GetMobile ia a wrapper of GetWithUA with UA of iPhone 6 Plus
-func GetMobile(url string) (*http.Response, error) {
-	return GetWithUA(uaiPhone6Plus)(url)
-}
 
 var phantomPoolSize = 20
 var phantomPool = make(chan int, phantomPoolSize)

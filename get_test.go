@@ -5,22 +5,18 @@ import (
 	"testing"
 )
 
-func TestGetMobile(t *testing.T) {
-	succCases := []string{
-		"http://m.facebook.com",
-	}
-	failCases := []string{
-		"NOT_AN_URL",
-	}
-
-	for _, url := range succCases {
-		_, err := GetMobile(url)
+func assertGettable(t *testing.T, getfunc GetFunc, urls []string) {
+	for _, url := range urls {
+		_, err := getfunc(url)
 		if err != nil {
 			t.Errorf("Failed: %s", url)
 		}
 	}
-	for _, url := range failCases {
-		_, err := GetMobile(url)
+}
+
+func assertNotGettable(t *testing.T, getfunc GetFunc, urls []string) {
+	for _, url := range urls {
+		_, err := getfunc(url)
 		if err == nil {
 			t.Errorf("Should fail while not: %s", url)
 		}
@@ -42,23 +38,10 @@ func TestGetFullPage(t *testing.T) {
 }
 
 func TestGetInsecure(t *testing.T) {
-	succCases := []string{
+	assertGettable(t, GetInsecure, []string{
 		"https://www.tokyo-hot.com/product/?q=n0110",
-	}
-	failCases := []string{
+	})
+	assertNotGettable(t, GetInsecure, []string{
 		"NOT_AN_URL",
-	}
-
-	for _, url := range succCases {
-		_, err := GetInsecure(url)
-		if err != nil {
-			t.Errorf("Failed: %s", url)
-		}
-	}
-	for _, url := range failCases {
-		_, err := GetInsecure(url)
-		if err == nil {
-			t.Errorf("Should fail while not: %s", url)
-		}
-	}
+	})
 }
