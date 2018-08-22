@@ -3,11 +3,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4a0c6bb4805508a6287675fac876be2ac1182539ca8a32468d8128882e9d5009"
-  name = "github.com/golang/snappy"
+  digest = "1:79693788b444b966d4a8ff8a0d30c92daa2b186214e98b6e2e3ed5f3a4dfe54c"
+  name = "github.com/benbjohnson/phantomjs"
   packages = ["."]
   pruneopts = "UT"
-  revision = "2e65f85255dbc3072edf28d6b5b8efc472979f5a"
+  revision = "1b81734f7877b51cadd82ee32663ae88f630469c"
 
 [[projects]]
   branch = "master"
@@ -16,27 +16,6 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "f6da07765239fa8b0fd63adc3a3a6a5699c162d9"
-
-[[projects]]
-  branch = "master"
-  digest = "1:f2ffd421680b0a3f7887501b3c6974bcf19217ecd301d0e2c9b681940ec363d5"
-  name = "github.com/syndtr/goleveldb"
-  packages = [
-    "leveldb",
-    "leveldb/cache",
-    "leveldb/comparer",
-    "leveldb/errors",
-    "leveldb/filter",
-    "leveldb/iterator",
-    "leveldb/journal",
-    "leveldb/memdb",
-    "leveldb/opt",
-    "leveldb/storage",
-    "leveldb/table",
-    "leveldb/util",
-  ]
-  pruneopts = "UT"
-  revision = "ae2bd5eed72d46b28834ec3f60db3a3ebedd8dbd"
 
 [[projects]]
   branch = "master"
@@ -80,8 +59,8 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/benbjohnson/phantomjs",
     "github.com/junzh0u/ioutilx",
-    "github.com/syndtr/goleveldb/leveldb",
     "golang.org/x/net/html/charset",
   ]
   solver-name = "gps-cdcl"
