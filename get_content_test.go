@@ -55,7 +55,7 @@ func TestGetContentViaPhantomJSWithWait(t *testing.T) {
 		Secure:   false,
 		Expires:  time.Now().Add(1000 * time.Hour),
 	}
-	content, err := GetContentViaPhantomJS([]*http.Cookie{&javCookie}, 6*time.Second, "", "")(
+	content, err := GetContentViaPhantomJS([]*http.Cookie{&javCookie}, 6*time.Second, "", "Checking your browser before accessing")(
 		"http://www.javlibrary.com/ja/?v=javlimtiza")
 	if err != nil {
 		t.Fatal(err)
