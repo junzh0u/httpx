@@ -28,7 +28,7 @@ func main() {
 	case "insecure":
 		get(flag.Arg(1), httpx.GetContentInUTF8(httpx.GetInsecure))
 	case "phantomjs":
-		get(flag.Arg(1), httpx.GetContentViaPhantomJS([]*http.Cookie{}, 0))
+		get(flag.Arg(1), httpx.GetContentViaPhantomJS([]*http.Cookie{}, 0, "", ""))
 	case "standalone":
 		get(flag.Arg(1), httpx.GetContentViaStandalonePhantomJS())
 	case "jav":
@@ -41,7 +41,7 @@ func main() {
 			Secure:   false,
 			Expires:  time.Now().Add(1000 * time.Hour),
 		}
-		get(flag.Arg(1), httpx.GetContentViaPhantomJS([]*http.Cookie{&javCookie}, 6*time.Second))
+		get(flag.Arg(1), httpx.GetContentViaPhantomJS([]*http.Cookie{&javCookie}, 6*time.Second, "", ""))
 	case "mgs":
 		mgsCookie := http.Cookie{
 			Name:     "adc",
@@ -52,7 +52,7 @@ func main() {
 			Secure:   false,
 			Expires:  time.Now().Add(1000 * time.Hour),
 		}
-		get(flag.Arg(1), httpx.GetContentViaPhantomJS([]*http.Cookie{&mgsCookie}, 0))
+		get(flag.Arg(1), httpx.GetContentViaPhantomJS([]*http.Cookie{&mgsCookie}, 0, "", ""))
 	default:
 		get(flag.Arg(0), httpx.GetContentInUTF8(http.Get))
 	}

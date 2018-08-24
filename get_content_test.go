@@ -29,13 +29,16 @@ func TestGetContentViaPhantomJSWithCookie(t *testing.T) {
 		Secure:   false,
 		Expires:  time.Now().Add(1000 * time.Hour),
 	}
-	content, err := GetContentViaPhantomJS([]*http.Cookie{&mgsCookie}, 0)(
+	content, err := GetContentViaPhantomJS([]*http.Cookie{&mgsCookie}, 0, "", "")(
 		"http://www.mgstage.com/search/search.php?search_word=SIRO-1715&search_shop_id=shiroutotv")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	if strings.Contains(content, "年齢認証") {
-		t.Error("Age verification required, cookie not working")
+		t.Fatal("Age verification required, cookie not working")
+	}
+	if !strings.Contains(content, "video/SIRO-1715") {
+		t.Fatal("No link found, page might not fully load")
 	}
 }
 
@@ -52,13 +55,16 @@ func TestGetContentViaPhantomJSWithWait(t *testing.T) {
 		Secure:   false,
 		Expires:  time.Now().Add(1000 * time.Hour),
 	}
-	content, err := GetContentViaPhantomJS([]*http.Cookie{&javCookie}, 6*time.Second)(
+	content, err := GetContentViaPhantomJS([]*http.Cookie{&javCookie}, 6*time.Second, "", "")(
 		"http://www.javlibrary.com/ja/?v=javlimtiza")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	if strings.Contains(content, "cf-im-under-attack") {
-		t.Error("Challenged by Cloudfare")
+		t.Fatal("Challenged by Cloudfare")
+	}
+	if !strings.Contains(content, "SDDE-222") {
+		t.Fatal("Page not fully loaded")
 	}
 }
 
@@ -77,7 +83,16 @@ func BenchmarkGetContentViaPhantomJS(b *testing.B) {
 	defer phantomjs.DefaultProcess.Close()
 
 	for i := 0; i < b.N; i++ {
-		GetContentViaPhantomJS([]*http.Cookie{}, 0)("http://m.1pondo.tv/movies/1/")
+		GetContentViaPhantomJS([]*http.Cookie{}, 0, "", "")("http://m.1pondo.tv/movies/1/")
+	}
+}
+
+func BenchmarkGetContentFullPage(b *testing.B) {
+	phantomjs.DefaultProcess.Open()
+	defer phantomjs.DefaultProcess.Close()
+
+	for i := 0; i < b.N; i++ {
+		GetContentFullPage("http://m.1pondo.tv/movies/1/")
 	}
 }
 

@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/benbjohnson/phantomjs"
@@ -41,7 +42,7 @@ func GetContentInUTF8(getfunc GetFunc) GetContentFunc {
 }
 
 // GetContentViaPhantomJS returns a GetContentFunc that uses PhantomJS wrapper
-func GetContentViaPhantomJS(cookies []*http.Cookie, waitDuration time.Duration) GetContentFunc {
+func GetContentViaPhantomJS(cookies []*http.Cookie, waitDur time.Duration, whiteWord string, blackWord string) GetContentFunc {
 	return func(url string) (string, error) {
 		page, err := phantomjs.DefaultProcess.CreateWebPage()
 		if err != nil {
@@ -55,13 +56,33 @@ func GetContentViaPhantomJS(cookies []*http.Cookie, waitDuration time.Duration) 
 			return "", err
 		}
 
-		if waitDuration > 0 {
-			time.Sleep(waitDuration)
+		if waitDur > 0 {
+			time.Sleep(waitDur)
+		}
+
+		content, err := page.Content()
+		waitedFor := 0 * time.Second
+		waitPerCycle := 100 * time.Millisecond
+		waitAtMost := 5 * time.Second
+		for err == nil {
+			if (whiteWord == "" || strings.Contains(content, whiteWord)) &&
+				(blackWord == "" || !strings.Contains(content, blackWord)) {
+				break
+			}
+			time.Sleep(waitPerCycle)
+			waitedFor = waitedFor + waitPerCycle
+			content, err = page.Content()
+			if waitedFor > waitAtMost {
+				break
+			}
 		}
 
 		return page.Content()
 	}
 }
+
+// GetContentFullPage is GetContentViaPhantomJS with default white word
+var GetContentFullPage = GetContentViaPhantomJS([]*http.Cookie{}, 0, "", "")
 
 // GetContentViaStandalonePhantomJS returns a GetContentFunc that uses
 // PhantomJS in a standalone process

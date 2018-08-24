@@ -42,7 +42,7 @@ func headThenReplaceContent(getContent GetContentFunc) GetFunc {
 // GetViaPhantomJS returns a GetFunc that calls http.Head to get header, while
 // using PhantomJS wrapper to get content
 func GetViaPhantomJS(cookies []*http.Cookie, waitDuration time.Duration) GetFunc {
-	return headThenReplaceContent(GetContentViaPhantomJS(cookies, waitDuration))
+	return headThenReplaceContent(GetContentViaPhantomJS(cookies, waitDuration, "", ""))
 }
 
 // GetViaStandalonePhantomJS returns a GetFunc that calls http.Head to get
