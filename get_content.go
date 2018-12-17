@@ -59,11 +59,11 @@ func GetContentViaPhantomJS(cookies []*http.Cookie, waitDur time.Duration, white
 			return "", err
 		}
 		if waitDur > 0 {
-			time.Sleep(waitDur)
+			time.Sleep(waitDur / 2)
 		}
 
 		waitPerCycle := 100 * time.Millisecond
-		for waitedFor := 0 * time.Second; waitedFor < waitDur; waitedFor += waitPerCycle {
+		for waitedFor := 0 * time.Second; waitedFor < waitDur/2; waitedFor += waitPerCycle {
 			time.Sleep(waitPerCycle)
 			content, err := page.Content()
 			if err != nil {
