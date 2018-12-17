@@ -61,6 +61,7 @@ func TestGetContentViaPhantomJSWithWait(t *testing.T) {
 		t.Fatal(err)
 	}
 	if strings.Contains(content, "cf-im-under-attack") {
+		t.Log(content)
 		t.Fatal("Challenged by Cloudfare")
 	}
 	if !strings.Contains(content, "SDDE-222") {
