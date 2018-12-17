@@ -57,7 +57,7 @@ func TestGetContentViaPhantomJSWithWait(t *testing.T) {
 	}
 	content, err := GetContentViaPhantomJS(
 		[]*http.Cookie{&javCookie},
-		20*time.Second,
+		10*time.Second,
 		"",
 		"Checking your browser before accessing",
 	)("http://www.javlibrary.com/ja/?v=javlimtiza")
