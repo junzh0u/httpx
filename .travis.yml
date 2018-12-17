@@ -4,6 +4,6 @@ go:
  - "1.11.x"
 
 env:
-  - GO111MODULE=on PS1=faketty
+  - GO111MODULE=on
 
 install: phantomjs --version
