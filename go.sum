@@ -1,0 +1,14 @@
+github.com/benbjohnson/phantomjs v0.0.0-20170410144507-1b81734f7877 h1:QNeATGD2qYPKEGDAm3hvcdNnWHZnYqO8R6Lgpd9MkCs=
+github.com/benbjohnson/phantomjs v0.0.0-20170410144507-1b81734f7877/go.mod h1:AnuTIiacTYWkfuqm8V2pSrShJokKKkNVoG4FyCc17q0=
+github.com/benbjohnson/phantomjs v0.0.0-20181211182228-6499a20f5cd6 h1:8M0IQG86rXdM4Ciktd6RTbripTDaprxQFvqvGOcvvbc=
+github.com/benbjohnson/phantomjs v0.0.0-20181211182228-6499a20f5cd6/go.mod h1:AnuTIiacTYWkfuqm8V2pSrShJokKKkNVoG4FyCc17q0=
+github.com/junzh0u/ioutilx v0.0.0-20160329171302-f6da07765239 h1:5mwOBDMqX5v7GUv466zdu4ohRFAlPQyc7jgD/c1Huz8=
+github.com/junzh0u/ioutilx v0.0.0-20160329171302-f6da07765239/go.mod h1:lukeEQuu/9F2C1CktsR5CC77Gv1/QQSNXRk9kiIQG64=
+github.com/junzh0u/ioutilx v0.0.0-20180827205417-117bc779d863 h1:MsSjZ8rARgi53A9B6tzXwZcFla3rMDcGtqpy5jGSwWA=
+github.com/junzh0u/ioutilx v0.0.0-20180827205417-117bc779d863/go.mod h1:lukeEQuu/9F2C1CktsR5CC77Gv1/QQSNXRk9kiIQG64=
+golang.org/x/net v0.0.0-20180821023952-922f4815f713 h1:rMJUcaDGbG+X967I4zGKCq5laYqcGKJmpB+3jhpOhPw=
+golang.org/x/net v0.0.0-20180821023952-922f4815f713/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
+golang.org/x/net v0.0.0-20181217023233-e147a9138326 h1:iCzOf0xz39Tstp+Tu/WwyGjUXCk34QhQORRxBeXXTA4=
+golang.org/x/net v0.0.0-20181217023233-e147a9138326/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
+golang.org/x/text v0.3.0 h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=
+golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
