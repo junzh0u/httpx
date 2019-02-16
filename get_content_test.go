@@ -2,6 +2,7 @@ package httpx
 
 import (
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -43,6 +44,10 @@ func TestGetContentViaPhantomJSWithCookie(t *testing.T) {
 }
 
 func TestGetContentViaPhantomJSWithWait(t *testing.T) {
+	if os.Getenv("CI") != "" {
+		t.SkipNow()
+	}
+
 	phantomjs.DefaultProcess.Open()
 	defer phantomjs.DefaultProcess.Close()
 
