@@ -6,7 +6,5 @@ go:
 env:
   - GO111MODULE=on
 
-install: phantomjs --version
-
 script:
   - go test -v -race
