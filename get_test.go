@@ -2,49 +2,35 @@ package httpx
 
 import (
 	"net/http"
+	"strings"
 	"testing"
-
-	"github.com/benbjohnson/phantomjs"
+	"time"
 )
 
-func assertGettable(t *testing.T, getfunc GetFunc, urls []string) {
-	for _, url := range urls {
-		_, err := getfunc(url)
-		if err != nil {
-			t.Errorf("Failed: %s", url)
-		}
-	}
-}
-
-func assertNotGettable(t *testing.T, getfunc GetFunc, urls []string) {
-	for _, url := range urls {
-		_, err := getfunc(url)
-		if err == nil {
-			t.Errorf("Should fail while not: %s", url)
-		}
-	}
-}
-
 func TestGetInsecure(t *testing.T) {
-	assertGettable(t, GetInsecure, []string{
-		"https://www.tokyo-hot.com/product/?q=n0110",
-	})
-	assertNotGettable(t, GetInsecure, []string{
-		"NOT_AN_URL",
-	})
-}
-
-func BenchmarkGetViaPhantomJS(b *testing.B) {
-	phantomjs.DefaultProcess.Open()
-	defer phantomjs.DefaultProcess.Close()
-
-	for i := 0; i < b.N; i++ {
-		GetViaPhantomJS([]*http.Cookie{}, 0)("http://m.1pondo.tv/movies/1/")
+	_, err := GetInsecure("http://www.google.co.jp")
+	if err != nil {
+		t.Error(err)
 	}
 }
 
-func BenchmarkGetViaStandalonePhantomJS(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		GetViaStandalonePhantomJS()("http://m.1pondo.tv/movies/1/")
+func TestGetWithCookies(t *testing.T) {
+	mgsCookies := []*http.Cookie{&http.Cookie{
+		Name:     "adc",
+		Value:    "1",
+		Domain:   ".mgstage.com",
+		Path:     "/",
+		HttpOnly: false,
+		Secure:   false,
+		Expires:  time.Now().Add(1000 * time.Hour),
+	}}
+
+	content, err := ReadBodyInUTF8(GetWithCookies(mgsCookies))(
+		"https://www.mgstage.com/search/search.php?search_word=SIRO-1715&search_shop_id=shiroutotv")
+	if err != nil {
+		t.Error(err)
+	}
+	if strings.Contains(content, "年齢認証") {
+		t.Errorf("Challenged by 年齢認証")
 	}
 }
