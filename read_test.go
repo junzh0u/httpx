@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestReadBodyInUTF8(t *testing.T) {
-	_, err := ReadBodyInUTF8(http.Get)("http://www.google.co.jp")
+func TestReadBodyX(t *testing.T) {
+	_, err := ReadBodyX(http.Get("http://www.google.co.jp"))
 	if err != nil {
 		t.Error(err)
 	}

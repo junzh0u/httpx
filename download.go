@@ -1,7 +1,6 @@
 package httpx
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -9,7 +8,6 @@ import (
 
 // Download gets the remote srcURL then writes to a local file under destPath
 func Download(srcURL string, destPath string) error {
-	fmt.Printf("\tDownloading %s to %s\n", srcURL, destPath)
 	resp, err := http.Get(srcURL)
 	if err != nil {
 		return err
