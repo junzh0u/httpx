@@ -1,6 +1,7 @@
 package httpx
 
 import (
+	"bytes"
 	"io/ioutil"
 	"net/http"
 
@@ -13,6 +14,8 @@ func ReadBody(resp *http.Response) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	resp.Body.Close()
+	resp.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 
 	contentType := resp.Header.Get("Content-Type")
 	encoding, _, _ := charset.DetermineEncoding(body, contentType)
